@@ -34,7 +34,7 @@
 
 12- find /etc -name "*.conf" -type f -mtime -7
 
-13- Cron Daemon: The cron daemon is a background service in Unix like systems that schedules and automates repetitive tasks by running specified commands or scripts at set intervals. Cron jobs are defined in crontab files and can be scheduled to run at specific times or intervals, making it useful for tasks like backups, system maintenance, and periodic data processing.
+13- Cron Daemon: The cron daemon is a background service in Unix systems that schedules and automates repetitive tasks by running specified commands or scripts at set time or intervals. Cron jobs are defined in crontab files and can be scheduled to run at specific times or intervals, making it useful for tasks like backups, system maintenance, and periodic data processing.
 	•	Example Cron Job:
 	•	To run a script named backup.sh every day at midnight, add line to the crontab file :  0 0 * * * /path/to/backup.s
 
@@ -45,13 +45,18 @@
 16- Difference between ext3 and ext4 filesystems: Ext3 is an older filesystem than ext4, which offers several improvements in performance, reliability, and storage management.
 
   -Two features of ext4 that make it better:
-   1-.	ext4 supports file sizes up to 16 TB and volumes up to 1 EB ( Extent Block) , compared to ext3’s maximum of 2 TB.
+   1-.	ext4 supports larger file sizes up to 16 TB and volumes up to 1 EB ( Extent Block) , compared to ext3  maximum of 2 TB.
 
    2-.	ext4 uses extents (contiguous blocks) for large files, reducing fragmentation and improving read/write performance over ext3, which uses indirect block mapping.
 
 
- 17- 
-
+ 17- identify new disk , us the lsblk command 
+ - create a new partition assuming new disk is on dev/sda , use sudo fdisk /dev/sda : in fdisk press n to create new partition , press p for primay partition then chioce partition number (1)
+ - then format the partition with ext4 : use the sudo mkfs.ext4 /dev/sda1
+ - create the /data directory if it doesn't exist  using sudo mkdir -p /data
+ - mount the new partition using sudo /dev/sda1 /data
+ - you should then update the /etc/fstab for permanent mounting 
+   
 
 18- Purpose of the /etc/fstab file: 	The /etc/fstab file contains information about disk partitions and filesystems that should be automatically mounted when system boots. It improves the management of persistent mounts.
 
@@ -63,7 +68,7 @@ BONUS
 
 The Linux boot process begins the moment you power on your machine :
 
-BIOS or UEFI: The system’s firmware (BIOS or UEFI) , performs a Power-On Self Test (POST) to check that essential hardware is working. It then locates a hard drive and hands over control to the bootloader. GRUB (Grand Unified Bootloader ): GRUB is a bootloader that manages and loads the Linux kernel into memory. It also offers a boot menu, letting you choose between different OS versions. GRUB loads the kernel and an initial RAM disk (initramfs), which contains essential drivers for booting.	Kernel: Once the kernel is loaded, it initializes and  controls the hardware, setting up memory , detecting connected devices, and mounting the root filesystem. The kernel is essentially the core of Linux, handlings system processes and resources.init or systemd (System Initialization): The kernel starts the init process (the first process ) or, on modern systems, systemd. This is the parent of all processes and is responsible for booting userspace applications. systemd initializes the system by loading various services, mounting file systems, and starting essential daemons.User Space and Login: Finally, systemd (or init) loads the graphical interface or command-line login prompt. Once you log in, the OS is fully functional , with services, daemons, and applications running in the background, ready for use.
+ The system’s firmware (BIOS or UEFI) , performs a Power-On Self Test (POST) to check that essential hardware is working then locates a hard drive and hands over control to the bootloader. GRUB (Grand Unified Bootloader ): GRUB is a bootloader that manages and loads the Linux kernel into memory. It also offers a boot menu,so you choose between different OS versions. GRUB loads the kernel and an initial RAM disk (initramfs), which contains essential drivers for booting . Kernel: Once the kernel is loaded, it initializes and  controls the hardware, setting up memory ,and mounting the root filesystem. The kernel is essentially the core of Linux, handlings system processes and resources.init or systemd (System Initialization): The kernel starts the init process (the first process ) or, on modern systems, systemd. This is the parent of all processes and is responsible for booting userspace applications. systemd initializes the system by loading various services, mounting file systems, and starting essential daemons.User Space and Login: Finally, systemd (or init) loads the graphical interface or command-line login prompt. Once you log in, the OS is fully functional.
  
 
 
